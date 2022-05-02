@@ -8,7 +8,9 @@ var connection = mysql.createConnection({
     database: "pronote_back"
 });
 
-var url = "https://randomuser.me/api";
+var studentsUrl = "https://randomuser.me/api/?results=2";
+var teacherUrl = "https://randomuser.me/api/?results=5";
+
 
 //Connect the back to the database
 connection.connect(async function(err) {
@@ -16,19 +18,31 @@ connection.connect(async function(err) {
     console.log("Connected to CUBE 3 database!")
 
     //make a loop to fetch 30 different profiles of users
-    for (var i = 0; i < 30; i++) {
+
         //get axios to connect to the url of the api generating fake people details
-        await axios.get(url).then( function(response){
-            result = response.data;
-            
+        await axios.get(studentsUrl).then( function(response){
+            var result = response.data.results;
 
-            var sql = "INSERT INTO customers (name,) VALUES ('Company Inc', 'Highway 37')";
+            result.forEach(result => {
+                var user = {};
+                if (result.gender == 'male') {
+                    user.sexe = "m"
+                } else {
+                    user.sexe = "f"
+                }
+                user.f_name = result.name.first;
+                user.l_name = result.name.last;
+                user.age = result.dob.age;
 
-            con.query(sql, function (err, result) {
-              if (err) throw err;
-              console.log("1 record inserted");
+                // var sql = "INSERT INTO students (f_name, l_name, age, sexe) VALUES (";
+
+                // con.query(sql, function (err, result) {
+                //   if (err) throw err;
+                //   console.log("1 user inserted");
+                // });
+
             });
         })
-    }
+    
 });
 
