@@ -114,7 +114,7 @@ app.get('/register/:firstName/:lastName', (req,res,status) => {
 })
 
 app.get('/registerPassword/:firstName/:lastName/:password', (req, res, status) => {
-  connection.query("SELECT * FROM "+"student"+" WHERE f_name=? AND l_name=?" , [req.params.firstName, req.params.lastName, req.params.password], function(err, result, fields) {
+  connection.query("SELECT * FROM "+"student"+" WHERE f_name=? AND l_name=?" , [req.params.firstName, req.params.lastName], function(err, result, fields) {
     if (err) {
       console.log(err)
       res.send("API OnlySchool : Erreur base de données, utilisation correcte de l'url : registerPassword/firstName/lastName/password")
@@ -125,9 +125,9 @@ app.get('/registerPassword/:firstName/:lastName/:password', (req, res, status) =
     }
     else {
       res.status(201).send("API OnlySchool : Mot de passe créé avec succès.")
-      connection.query("UPDATE "+"student"+" SET password VALUES ('" + req.params.password + "')",  function (err) {
+      connection.query("UPDATE "+"student"+" SET password = '" + req.params.password + "'WHERE f_name=? AND l_name=?" , [req.params.firstName, req.params.lastName],  function (err) {
         if (err) throw err;
-        console.log("1 teacher inserted");
+        console.log("1 student inserted");
       });
     }
   })
