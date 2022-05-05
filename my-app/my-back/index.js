@@ -24,75 +24,6 @@ app.use(function(req, res, next) {
 connection.connect(async function (err) {
   if (err) throw err;
   console.log("Connected to OnlySchool database!");
-
-//   //get axios to connect to the url of the api generating fake people details
-//   await axios.get(studentsUrl).then(function (response) {
-//     var result = response.data.results;
-//     var dataFiltered = result.filter((user) => user.dob.age <= 30);
-//     //for each user in the api render,
-//     dataFiltered.forEach((result) => {
-//       var user = {};
-//       if (result.gender == "male") {
-//         user.sexe = "m";
-//       } else {
-//         user.sexe = "f";
-//       }
-//       user.f_name = result.name.first;
-//       user.l_name = result.name.last;
-//       user.age = result.dob.age;
-
-//       var sql =
-//         "INSERT INTO student (f_name, l_name, age, sexe) VALUES ('" +
-//         user.f_name +
-//         "','" +
-//         user.l_name +
-//         "','" +
-//         user.age +
-//         "','" +
-//         user.sexe +
-//         "')";
-
-//       connection.query(sql, function (err, result) {
-//         if (err) throw err;
-//         console.log("1 student inserted");
-//       });
-//     });
-//   });
-
-//   //do the same for teachers without the age filter
-//   await axios.get(teacherUrl).then(function (response) {
-//     var result = response.data.results;
-//     var dataFiltered = result.filter((user) => user.dob.age >= 30);
-
-//     //for each user in the api render,
-//     dataFiltered.forEach((result) => {
-//       var user = {};
-//       if (result.gender == "male") {
-//         user.sexe = "m";
-//       } else {
-//         user.sexe = "f";
-//       }
-//       user.f_name = result.name.first;
-//       user.l_name = result.name.last;
-//       user.age = result.dob.age;
-
-//       var sql =
-//         "INSERT INTO teacher (f_name, l_name, age, sexe) VALUES ('" +
-//         user.f_name +
-//         "','" +
-//         user.l_name +
-//         "','" +
-//         user.age +
-//         "','" +
-//         user.sexe +
-//         "')";
-
-//       connection.query(sql, function (err, result) {
-//         if (err) throw err;
-//         console.log("1 teacher inserted");
-//       });
-//     });
-//   });
 });
 
 
@@ -108,6 +39,7 @@ app.get('/register-:status/:firstName/:lastName', (req,res) => {
     }
     else {
       res.status(204).send("API OnlySchool : Utilisateur existant, connection réussie.")
+      console.log("SAlijizejfizdjji")
     }
   })
   console.log(req.params)
