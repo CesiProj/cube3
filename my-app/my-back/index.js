@@ -96,11 +96,11 @@ connection.connect(async function (err) {
 });
 
 
-app.get('/register/:firstName/:lastName', (req,res,status) => {
-  connection.query("SELECT * FROM "+"student"+" WHERE f_name=? AND l_name=?" , [req.params.firstName, req.params.lastName], function (err, result, fields) {
+app.get('/register-:status/:firstName/:lastName', (req,res) => {
+  connection.query("SELECT * FROM "+ req.params.status +" WHERE f_name=? AND l_name=?" , [req.params.firstName, req.params.lastName], function (err, result, fields) {
     if (err) {
       console.log(err)
-      res.send("API OnlySchool : Erreur base de données, utilisation correcte de l'url : register/firstName/lastName")
+      res.send("API OnlySchool : Erreur base de données, utilisation correcte de l'url : register-status/firstName/lastName")
     }
     else if (result.length === 0)
     {
@@ -113,8 +113,8 @@ app.get('/register/:firstName/:lastName', (req,res,status) => {
   console.log(req.params)
 })
 
-app.get('/registerPassword/:firstName/:lastName/:password', (req, res, status) => {
-  connection.query("SELECT * FROM "+"student"+" WHERE f_name=? AND l_name=?" , [req.params.firstName, req.params.lastName], function(err, result, fields) {
+app.get('/registerPassword-:status/:firstName/:lastName/:password', (req, res) => {
+  connection.query("SELECT * FROM "+ req.params.status +" WHERE f_name=? AND l_name=?" , [req.params.firstName, req.params.lastName], function(err, result, fields) {
     if (err) {
       console.log(err)
       res.send("API OnlySchool : Erreur base de données, utilisation correcte de l'url : registerPassword/firstName/lastName/password")
@@ -125,9 +125,9 @@ app.get('/registerPassword/:firstName/:lastName/:password', (req, res, status) =
     }
     else {
       res.status(201).send("API OnlySchool : Mot de passe créé avec succès.")
-      connection.query("UPDATE "+"student"+" SET password = '" + req.params.password + "'WHERE f_name=? AND l_name=?" , [req.params.firstName, req.params.lastName],  function (err) {
+      connection.query("UPDATE "+ req.params.status +" SET password = '" + req.params.password + "'WHERE f_name=? AND l_name=?" , [req.params.firstName, req.params.lastName],  function (err) {
         if (err) throw err;
-        console.log("1 student inserted");
+        console.log("1 "+ req.params.status +" inserted");
       });
     }
   })
