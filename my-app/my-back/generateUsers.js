@@ -59,7 +59,7 @@ connection.connect(async function (err) {
     });
   });
 
-  //do the same for teachers without the age filter
+  //do the same for teachers with the filter above 30 years old
   await axios.get(teacherUrl).then(function (response) {
     var result = response.data.results;
     var dataFiltered = result.filter((user) => user.dob.age >= 30);
