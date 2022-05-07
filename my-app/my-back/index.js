@@ -1,6 +1,7 @@
 const mysql = require("mysql");
 const axios = require("axios");
 const express = require("express");
+const crypto = require("crypto");
 const app = express();
 
 var connection = mysql.createConnection({
@@ -28,6 +29,7 @@ connection.connect(async function (err) {
   console.log("Connected to OnlySchool database!");
 });
 
+// Register d'un nouvel utilisateur dans la db
 app.get("/register/:firstname/:lastname/:age/:sexe/:password", (req, res) => {
   connection.query(
     "SELECT * FROM student WHERE f_name=?",
@@ -57,13 +59,40 @@ app.get("/register/:firstname/:lastname/:age/:sexe/:password", (req, res) => {
           }
         );
       } else {
-        res.send("API Arcane : Erreur base de données, utilisateur existant.");
+        res.send("OnlySchool : Erreur base de données, utilisateur existant.");
       }
     }
   );
   console.log(req.params);
 });
 
+// Login d'un utilisateur dans la db
+app.get("/login/:firstname/:lastname/:password", (req, res) => {
+  connection.query(
+    "SELECT * FROM student WHERE f_name=? AND l_name=? AND password=?",
+    [req.params.firstname, req.params.lastname, req.params.password],
+    function (err, result, fields) {
+      if (err) {
+        console.log(err);
+      } else if (result.length === 1) {
+        const id = crypto.randomBytes(20).toString("hex");
+        connection.query(
+          "UPDATE student SET token = '" +
+            id +
+            "' WHERE f_name=? AND l_name=? AND password=?",
+          [req.params.firstname, req.params.lastname, req.params.password],
+          function (err, result, fields) {
+            if (err) throw err;
+            else res.send(id);
+          }
+        );
+      } else {
+        res.send("OnlySchool : Utilisateur Inconnu");
+      }
+    }
+  );
+});
+
 app.listen(9090, () => {
-  console.log("Serveur à l'écoute");
+  console.log("OnlySchool : Serveur à l'écoute");
 });
