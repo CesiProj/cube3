@@ -27,11 +27,11 @@ connection.connect(async function (err) {
 });
 
 
-app.get('/register-:status/:firstName/:lastName', (req,res) => {
+app.get('/login-:status/:firstName:lastName/:password', (req,res) => {
   connection.query("SELECT * FROM "+ req.params.status +" WHERE f_name=? AND l_name=?" , [req.params.firstName, req.params.lastName], function (err, result, fields) {
     if (err) {
       console.log(err)
-      res.send("API OnlySchool : Erreur base de données, utilisation correcte de l'url : register-status/firstName/lastName")
+      res.send("API OnlySchool : Erreur base de données, utilisation correcte de l'url : login-status/firstName lastName/password")
     }
     else if (result.length === 0)
     {
@@ -39,7 +39,7 @@ app.get('/register-:status/:firstName/:lastName', (req,res) => {
     }
     else {
       res.status(204).send("API OnlySchool : Utilisateur existant, connection réussie.")
-      console.log("SAlijizejfizdjji")
+      connection.query("")
     }
   })
   console.log(req.params)
@@ -66,6 +66,42 @@ app.get('/registerPassword-:status/:firstName/:lastName/:password', (req, res) =
   console.log(req.params)
 })
 
+app.get("/register/:firstname/:lastname/:age/:sexe/:password", (req, res) => {
+  connection.query(
+    "SELECT * FROM student WHERE f_name=?",
+    [req.params.firstname],
+    function (err, result, fields) {
+      if (err) {
+        console.log(err);
+        res.send(
+          "OnlySchool : Erreur base de données, utilisation correcte de l'url "
+        );
+      } else if (result.length === 0) {
+        connection.query(
+          "INSERT INTO student (f_name,l_name, age, sexe, password) VALUES('" +
+            req.params.firstname +
+            "', '" +
+            req.params.lastname +
+            "', '" +
+            req.params.age +
+            "', '" +
+            req.params.sexe +
+            "', '" +
+            req.params.password +
+            "')",
+          function (err, result, fields) {
+            if (err) throw err;
+            res.send(" OnlySchool : Utilisateur enregistré.");
+          }
+        );
+      } else {
+        res.send("API Arcane : Erreur base de données, utilisateur existant.");
+      }
+    }
+  );
+  console.log(req.params);
+});
+
 app.listen(9090, () => {
-  console.log("Serveur à l'écoute")
+  console.log("Serveur à l'écoute");
 })
