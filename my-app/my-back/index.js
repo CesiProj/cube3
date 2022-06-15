@@ -1,5 +1,6 @@
 // Import DB Connection function
-import { dbConnect } from "./DataAccess/databaseConnection.js";
+const mainController = require("./Controller/MainController.js");
+const dbConnect = require("./DataAccess/databaseConnection.js");
 // // Create a require with create require
 // import createRequire from "module";
 // const require = createRequire(import.meta.url);
@@ -9,8 +10,8 @@ const axios = require("axios");
 const express = require("express");
 const app = express();
 
-dbConnect();
-
+dbContext = dbConnect.dbConnect(mysql, app);
+mainController.MainController(app);
 app.listen(9090, () => {
   console.log("Serveur à l'écoute");
 });
