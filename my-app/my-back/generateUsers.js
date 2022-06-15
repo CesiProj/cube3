@@ -1,14 +1,5 @@
-const mysql = require("mysql");
-const axios = require("axios");
-const express = require("express")
-const app = express()
+import { Imports } from "./Modules/import.mjs";
 
-var connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "pronote_back",
-});
 
 var studentsUrl = "https://randomuser.me/api/?results=100&nat=fr";
 var teacherUrl = "https://randomuser.me/api/?results=7&nat=fr";
